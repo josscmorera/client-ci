@@ -6,8 +6,6 @@ import {
   createTag,
   updateTag,
   deleteTag,
-  upvoteTag,
-  downvoteTag,
 } from "../thunks/tag";
 import { addItemArray, replacleItemArray } from "../../helpers/functions";
 
@@ -115,42 +113,6 @@ export const tagSlice = createSlice({
       return {
         ...state,
         tag: action.payload.data,
-        status: "fulfilled",
-        loadingSave: false,
-        errorSave: "",
-      };
-    });
-    builder.addCase(upvoteTag.rejected, (state, action) => {
-      state.loadingSave = false;
-      state.errorSave = action.payload;
-    });
-    builder.addCase(upvoteTag.pending, (state) => {
-      state.loadingSave = true;
-      state.errorSave = "";
-    });
-    builder.addCase(upvoteTag.fulfilled, (state, action) => {
-      return {
-        ...state,
-        tag: action.payload.data,
-        tags: replacleItemArray(state.tags, action.payload.data),
-        status: "fulfilled",
-        loadingSave: false,
-        errorSave: "",
-      };
-    });
-    builder.addCase(downvoteTag.rejected, (state, action) => {
-      state.loadingSave = false;
-      state.errorSave = action.payload;
-    });
-    builder.addCase(downvoteTag.pending, (state) => {
-      state.loadingSave = true;
-      state.errorSave = "";
-    });
-    builder.addCase(downvoteTag.fulfilled, (state, action) => {
-      return {
-        ...state,
-        tag: action.payload.data,
-        tags: replacleItemArray(state.tags, action.payload.data),
         status: "fulfilled",
         loadingSave: false,
         errorSave: "",

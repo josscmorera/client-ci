@@ -18,11 +18,9 @@ export default function ModalAddCommunity({ visible, onClose }) {
     dispatch(createCommunity(data));
   };
 
-  console.log("status", status);
   useEffect(() => {
-    console.log("status fulfilled", status === "fulfilled");
     if (status === "fulfilled") {
-      resetStatus();
+      dispatch(resetStatus());
       onClose();
     }
   }, [status]);

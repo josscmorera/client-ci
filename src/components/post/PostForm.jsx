@@ -1,35 +1,41 @@
-import { Box, FormLabel, TextField } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import React from "react";
 import SelectCommunity from "../community/SelectCommunity";
 import { TextEditor } from "../base/TextEditor";
 import Dropzone from "../base/Dropzone";
+import SelectTag from "../tag/SelectTag";
+import Loading from "../base/Loading";
 
 export default function PostForm({ onSubmit, loading, message }) {
-  const ref = React.useRef(null);
-  const [type, setType] = React.useState("");
   const [community, setCommunity] = React.useState(null);
+  const [tag, setTag] = React.useState(null);
   const [content, setContent] = React.useState("");
   const [file, setFile] = React.useState(null);
 
   const handleSubmit = (event) => {
-    console.log("call postForm");
     event.preventDefault();
+    event.stopPropagation();
     const data = new FormData(event.currentTarget);
 
-    if (type === "community") {
+    if (community) {
       data.set("community", community);
     }
+    if (tag) {
+      data.set("tag", tag);
+    }
+    if (content) {
+      data.set("content", content);
+    }
+    if (file) {
+      data.set("file", file);
+    }
 
+    console.log(file);
     onSubmit(data);
   };
 
   return (
     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-      <SelectCommunity
-        value={community}
-        onChange={setCommunity}
-        changeType={setType}
-      />
       <TextField
         margin="normal"
         required
@@ -40,13 +46,32 @@ export default function PostForm({ onSubmit, loading, message }) {
         autoComplete="title"
         autoFocus
       />
+      <SelectCommunity value={community} onChange={setCommunity} />
+      <SelectTag value={tag} onChange={setTag} />
       <Dropzone file={file} onChange={setFile} />
       <TextEditor
-        ref={ref}
         id="content"
         value={content}
         onEditorChange={(content) => setContent(content)}
       />
+      {message && (
+        <Typography
+          component="h2"
+          variant="h6"
+          sx={{ color: "orange", textAlign: "center", padding: 2 }}
+        >
+          {message}
+        </Typography>
+      )}
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        sx={{ mt: 3, mb: 2 }}
+        disabled={loading}
+      >
+        {loading ? <Loading /> : "Submit"}
+      </Button>
     </Box>
   );
 }

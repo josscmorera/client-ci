@@ -4,6 +4,7 @@ import authReducer from "./slices/auth";
 import userReducer from "./slices/user";
 import communityReducer from "./slices/community";
 import postReducer from "./slices/post";
+import tagReducer from "./slices/tag";
 
 export default configureStore({
   reducer: {
@@ -11,5 +12,6 @@ export default configureStore({
     user: userReducer,
     community: communityReducer,
     post: postReducer,
+    tag: tagReducer,
   },
 });

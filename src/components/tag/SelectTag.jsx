@@ -1,47 +1,45 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import ModalAddCommunity from "./ModalAddCommunity";
+import ModalAddTag from "./ModalAddTag";
 import { Autocomplete, Box, Button, TextField } from "@mui/material";
-import { getCommunities } from "../../redux/thunks/community";
+import { getTags } from "../../redux/thunks/tag";
 import Loading from "../base/Loading";
 
-export default function SelectCommunity({ value, onChange }) {
+export default function SelectTag({ value, onChange }) {
   const [visible, setVisible] = React.useState(false);
 
-  const error = useSelector((state) => state.community.error);
-  const loading = useSelector((state) => state.community.loading);
-  const communities = useSelector((state) => state.community.communities);
+  const error = useSelector((state) => state.tag.error);
+  const loading = useSelector((state) => state.tag.loading);
+  const tags = useSelector((state) => state.tag.tags);
 
   const dispatch = useDispatch();
 
-  const options = communities.map((community) => {
-    return { value: community._id, label: community.name };
+  const options = tags.map((tag) => {
+    return { value: tag._id, label: tag.name };
   });
 
   const onSelect = (option) => {
     if (!option) return onChange(null);
 
-    const community = communities.find(
-      (community) => community._id === option.value
-    );
+    const tag = tags.find((tag) => tag._id === option.value);
 
-    onChange(community._id);
+    onChange(tag._id);
   };
 
   const valueToOption = (value) => {
     if (!value) return;
 
-    const community = communities.find((community) => community._id === value);
-    if (community) {
-      return { value: community._id, label: community.name };
+    const tag = tags.find((tag) => tag._id === value);
+    if (tag) {
+      return { value: tag._id, label: tag.name };
     }
     return null;
   };
 
   useEffect(() => {
-    if (communities.length === 0) {
-      dispatch(getCommunities());
+    if (tags.length === 0) {
+      dispatch(getTags());
     }
   }, []);
 
@@ -55,14 +53,14 @@ export default function SelectCommunity({ value, onChange }) {
           options={options}
           sx={{ width: 500 }}
           onChange={(event, option) => onSelect(option)}
-          renderInput={(params) => <TextField {...params} label="Community" />}
+          renderInput={(params) => <TextField {...params} label="Tag" />}
         />
         {loading && <Loading />}
         <Button onClick={() => setVisible(true)}>Create</Button>
       </Box>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <ModalAddCommunity visible={visible} onClose={() => setVisible(false)} />
+      <ModalAddTag visible={visible} onClose={() => setVisible(false)} />
     </>
   );
 }

@@ -17,13 +17,14 @@ export default function NewPost() {
 
   const loading = useSelector((state) => state.post.loadingSave);
   const error = useSelector((state) => state.post.errorSave);
-  const status = useSelector((state) => state.post.statusSave);
+  const status = useSelector((state) => state.post.status);
   const post = useSelector((state) => state.post.post);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   React.useEffect(() => {
+    console.log(status, post);
     if (status === "fulfilled") {
       dispatch(resetStatus());
       if (post.community)
