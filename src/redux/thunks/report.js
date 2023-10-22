@@ -2,11 +2,12 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import Axios from "../../lib/Axios";
 
-export const getUser = createAsyncThunk(
-  "user/getUser",
-  async (username, thunkAPI) => {
+export const getReports = createAsyncThunk(
+  "report/getReports",
+  async (_, thunkAPI) => {
     try {
-      let response = await Axios.get(`/users/username/${username}`);
+      let response = await Axios.get("/reports");
+
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -18,11 +19,12 @@ export const getUser = createAsyncThunk(
   }
 );
 
-export const updateUser = createAsyncThunk(
-  "user/updateUser",
-  async (data, thunkAPI) => {
+export const getReport = createAsyncThunk(
+  "report/getReport",
+  async (id, thunkAPI) => {
     try {
-      let response = await Axios.put(`/users/${data.id}`, data);
+      let response = await Axios.get(`/reports/${id}`);
+
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -34,11 +36,12 @@ export const updateUser = createAsyncThunk(
   }
 );
 
-export const followUser = createAsyncThunk(
-  "user/followUser",
+export const createReport = createAsyncThunk(
+  "report/createReport",
   async (data, thunkAPI) => {
     try {
-      let response = await Axios.post(`/users/${data.id}/follow`, data);
+      let response = await Axios.post("/reports/new", data);
+
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -50,11 +53,12 @@ export const followUser = createAsyncThunk(
   }
 );
 
-export const unfollowUser = createAsyncThunk(
-  "user/unfollowUser",
+export const updateReport = createAsyncThunk(
+  "report/updateReport",
   async (data, thunkAPI) => {
     try {
-      let response = await Axios.post(`/users/${data.id}/unfollow`, data);
+      let response = await Axios.put(`/reports/${data.id}`, data);
+
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -66,11 +70,12 @@ export const unfollowUser = createAsyncThunk(
   }
 );
 
-export const donateCoins = createAsyncThunk(
-  "user/donateCoins",
-  async (data, thunkAPI) => {
+export const deleteReport = createAsyncThunk(
+  "report/deleteReport",
+  async (id, thunkAPI) => {
     try {
-      let response = await Axios.post(`/users/${data.id}/donate`, data);
+      let response = await Axios.delete(`/reports/${id}`);
+
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(

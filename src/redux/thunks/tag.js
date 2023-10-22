@@ -14,9 +14,9 @@ export const getTags = createAsyncThunk("tag/getTags", async (_, thunkAPI) => {
   }
 });
 
-export const getTag = createAsyncThunk("tag/getTag", async (slug, thunkAPI) => {
+export const getTag = createAsyncThunk("tag/getTag", async (id, thunkAPI) => {
   try {
-    let response = await Axios.get(`/tags/slug/${slug}`);
+    let response = await Axios.get(`/tags/${id}`);
 
     return response.data;
   } catch (error) {

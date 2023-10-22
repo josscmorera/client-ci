@@ -9,12 +9,12 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useSelector, useDispatch } from "react-redux";
 
 import LoginForm from "../components/auth/LoginForm";
-import { login } from "../redux/thunks/user";
-import { resetStatus } from "../redux/slices/user";
+import { login } from "../redux/thunks/auth";
+import { resetStatus } from "../redux/slices/auth";
 
 export default function Login() {
-  const message = useSelector((state) => state.user.message);
-  const status = useSelector((state) => state.user.status);
+  const message = useSelector((state) => state.auth.message);
+  const status = useSelector((state) => state.auth.status);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

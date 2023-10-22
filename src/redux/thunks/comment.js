@@ -2,11 +2,11 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import Axios from "../../lib/Axios";
 
-export const getCommunities = createAsyncThunk(
-  "community/getCommunities",
+export const getComments = createAsyncThunk(
+  "comment/getComments",
   async (_, thunkAPI) => {
     try {
-      let response = await Axios.get("/communities");
+      let response = await Axios.get("/comments");
 
       return response.data;
     } catch (error) {
@@ -19,11 +19,11 @@ export const getCommunities = createAsyncThunk(
   }
 );
 
-export const getCommunity = createAsyncThunk(
-  "community/getCommunity",
-  async (slug, thunkAPI) => {
+export const getComment = createAsyncThunk(
+  "comment/getComment",
+  async (id, thunkAPI) => {
     try {
-      let response = await Axios.get(`/communities/slug/${slug}`);
+      let response = await Axios.get(`/comments/${id}`);
 
       return response.data;
     } catch (error) {
@@ -36,11 +36,11 @@ export const getCommunity = createAsyncThunk(
   }
 );
 
-export const createCommunity = createAsyncThunk(
-  "community/createCommunity",
+export const createComment = createAsyncThunk(
+  "comment/createComment",
   async (data, thunkAPI) => {
     try {
-      let response = await Axios.post("/communities/new", data);
+      let response = await Axios.post("/comments/new", data);
 
       return response.data;
     } catch (error) {
@@ -53,11 +53,11 @@ export const createCommunity = createAsyncThunk(
   }
 );
 
-export const updateCommunity = createAsyncThunk(
-  "community/updateCommunity",
+export const updateComment = createAsyncThunk(
+  "comment/updateComment",
   async (data, thunkAPI) => {
     try {
-      let response = await Axios.put(`/communities/${data.id}`, data);
+      let response = await Axios.put(`/comments/${data.id}`, data);
 
       return response.data;
     } catch (error) {
@@ -70,11 +70,11 @@ export const updateCommunity = createAsyncThunk(
   }
 );
 
-export const deleteCommunity = createAsyncThunk(
-  "community/deleteCommunity",
+export const deleteComment = createAsyncThunk(
+  "comment/deleteComment",
   async (id, thunkAPI) => {
     try {
-      let response = await Axios.delete(`/communities/${id}`);
+      let response = await Axios.delete(`/comments/${id}`);
 
       return response.data;
     } catch (error) {
@@ -87,11 +87,11 @@ export const deleteCommunity = createAsyncThunk(
   }
 );
 
-export const joinCommunity = createAsyncThunk(
-  "community/joinCommunity",
+export const upvoteComment = createAsyncThunk(
+  "comment/upvoteComment",
   async (id, thunkAPI) => {
     try {
-      let response = await Axios.put(`/communities/${id}/join`);
+      let response = await Axios.post(`/comments/${id}/upvote`);
 
       return response.data;
     } catch (error) {
@@ -104,11 +104,11 @@ export const joinCommunity = createAsyncThunk(
   }
 );
 
-export const leaveCommunity = createAsyncThunk(
-  "community/leaveCommunity",
+export const downvoteComment = createAsyncThunk(
+  "comment/downvoteComment",
   async (id, thunkAPI) => {
     try {
-      let response = await Axios.put(`/communities/${id}/leave`);
+      let response = await Axios.post(`/comments/${id}/downvote`);
 
       return response.data;
     } catch (error) {

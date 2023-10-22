@@ -1,79 +1,127 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
-import { login, register } from '../thunks/user'
+import {
+  getUser,
+  updateUser,
+  followUser,
+  unfollowUser,
+  donateCoins,
+} from "../thunks/user";
 
 const initialState = {
-  _id : '',
-  firstName: '',
-  lastName: '',
-  username: '',
-  email: '',
-  role: '',
-  followers: [],
-  following: [],
-  coins: 0,
-  createAt: '',
+  user: null,
   status: null,
-  message: ''
-}
+  error: "",
+  loading: false,
+  loadingSave: false,
+  errorSave: "",
+};
 
 export const userSlice = createSlice({
-    name: 'user',
-    initialState,
-    reducers: {
-        setUser: (state, action) => {
-            return {
-                ...action.payload.data,
-                status: 'fulfilled',
-                message: ''
-            }
-        },
-        resetStatus: state => {
-            state.status = null
-        },
-        setMessage: (state, action) => {
-            state.message = action.payload
-        },
-        resetUser: state => {
-            return initialState
-        } 
-
+  name: "user",
+  initialState,
+  reducers: {
+    setUser: (state, action) => {
+      return {
+        user: action.payload.data,
+        status: "fulfilled",
+        message: "",
+      };
     },
-    extraReducers: builder => {
-        builder.addCase(register.rejected, (state, action) => {
-            state.status = 'rejected'
-            state.message = action.payload
-        })
-        builder.addCase(register.pending, (state, action) => {
-            state.status = 'pending'
-            state.message = ''
-        })
-        builder.addCase(register.fulfilled, (state, action) => {
-            return { 
-                ...action.payload.data,
-                status: 'fulfilled',
-                message: ''
-            }
-        })
-        builder.addCase(login.pending, (state, action) => {
-            state.status = 'pending'
-            state.message = ''
-        })
-        builder.addCase(login.rejected, (state, action) => {
+    resetStatus: (state) => {
+      state.status = null;
+    },
+    setMessage: (state, action) => {
+      state.error = action.payload;
+    },
+    resetUser: (state) => {
+      return initialState;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getUser.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(getUser.pending, (state, action) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(getUser.fulfilled, (state, action) => {
+      return {
+        user: action.payload.data,
+        status: "fulfilled",
+        error: "",
+        loading: false,
+      };
+    });
+    builder.addCase(updateUser.rejected, (state, action) => {
+      state.loadingSave = false;
+      state.errorSave = action.payload;
+    });
+    builder.addCase(updateUser.pending, (state, action) => {
+      state.loadingSave = true;
+      state.errorSave = "";
+    });
+    builder.addCase(updateUser.fulfilled, (state, action) => {
+      return {
+        user: action.payload.data,
+        status: "fulfilled",
+        errorSave: "",
+        loadingSave: false,
+      };
+    });
+    builder.addCase(followUser.rejected, (state, action) => {
+      state.loadingSave = false;
+      state.errorSave = action.payload;
+    });
+    builder.addCase(followUser.pending, (state, action) => {
+      state.loadingSave = true;
+      state.errorSave = "";
+    });
+    builder.addCase(followUser.fulfilled, (state, action) => {
+      return {
+        user: action.payload.data,
+        status: "fulfilled",
+        errorSave: "",
+        loadingSave: false,
+      };
+    });
+    builder.addCase(unfollowUser.rejected, (state, action) => {
+      state.loadingSave = false;
+      state.errorSave = action.payload;
+    });
+    builder.addCase(unfollowUser.pending, (state, action) => {
+      state.loadingSave = true;
+      state.errorSave = "";
+    });
+    builder.addCase(unfollowUser.fulfilled, (state, action) => {
+      return {
+        user: action.payload.data,
+        status: "fulfilled",
+        errorSave: "",
+        loadingSave: false,
+      };
+    });
+    builder.addCase(donateCoins.rejected, (state, action) => {
+      state.loadingSave = false;
+      state.errorSave = action.payload;
+    });
+    builder.addCase(donateCoins.pending, (state, action) => {
+      state.loadingSave = true;
+      state.errorSave = "";
+    });
+    builder.addCase(donateCoins.fulfilled, (state, action) => {
+      return {
+        status: "fulfilled",
+        errorSave: "",
+        loadingSave: false,
+      };
+    });
+  },
+});
 
-            state.status = 'rejected'
-            state.message = action.payload
-        })
-        builder.addCase(login.fulfilled, (state, action) => {
-            return {
-                ...action.payload.data,
-                status: 'fulfilled',
-                message: ''
-            }
-        })
-    }
-})
+export const { setUser, resetStatus, setMessage, resetUser } =
+  userSlice.actions;
 
-export const { setUser, resetStatus, setMessage, resetUser } = userSlice.actions
-
-export default userSlice.reducer
+export default userSlice.reducer;

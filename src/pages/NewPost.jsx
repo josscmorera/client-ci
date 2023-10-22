@@ -13,7 +13,7 @@ import PostForm from "../components/post/PostForm";
 import { createPost } from "../redux/thunks/post";
 
 export default function NewPost() {
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.auth.user);
 
   const loading = useSelector((state) => state.post.loadingSave);
   const error = useSelector((state) => state.post.errorSave);
@@ -24,7 +24,6 @@ export default function NewPost() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    console.log(status, post);
     if (status === "fulfilled") {
       dispatch(resetStatus());
       if (post.community)

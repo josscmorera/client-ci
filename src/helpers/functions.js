@@ -1,6 +1,6 @@
 export const addItemArray = (array, item) => {
   const newArray = copy(array);
-  newArray.push(item);
+  newArray.unshift(item);
   return newArray;
 };
 

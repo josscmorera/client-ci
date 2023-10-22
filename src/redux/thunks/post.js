@@ -6,7 +6,7 @@ export const getPosts = createAsyncThunk(
   "post/getPosts",
   async (_, thunkAPI) => {
     try {
-      let response = await Axios.post("/posts");
+      let response = await Axios.get("/posts");
 
       return response.data;
     } catch (error) {
@@ -91,7 +91,7 @@ export const upvotePost = createAsyncThunk(
   "post/upvotePost",
   async (id, thunkAPI) => {
     try {
-      let response = await Axios.post(`/posts/${id}/upvote`);
+      let response = await Axios.put(`/posts/${id}/upvote`);
 
       return response.data;
     } catch (error) {
@@ -108,7 +108,7 @@ export const downvotePost = createAsyncThunk(
   "post/downvotePost",
   async (id, thunkAPI) => {
     try {
-      let response = await Axios.post(`/posts/${id}/downvote`);
+      let response = await Axios.put(`/posts/${id}/downvote`);
 
       return response.data;
     } catch (error) {

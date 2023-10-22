@@ -21,7 +21,6 @@ const pages = [
   { name: "home", url: "/" },
   { name: "populars", url: "/populars" },
   { name: "new post", url: "/new-post" },
-  //{ name: "communities", url: "/communities" },
 ];
 
 function NavBar() {
@@ -29,7 +28,7 @@ function NavBar() {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const isAuth = useSelector((state) => state.auth.isAuth);
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
 
   const handleOpenNavMenu = (event) => {
@@ -60,7 +59,7 @@ function NavBar() {
     ]);
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography

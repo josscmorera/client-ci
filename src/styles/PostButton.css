@@ -1,0 +1,13 @@
+.post-button {
+  border-radius: 20px;
+  background-color: #3d3d3d;
+  padding-right: 10px;
+  padding-left: 10px;
+  cursor: pointer;
+}
+
+.post-button:hover {
+  background-color: #2d2d2d;
+  transform: scale(1.02);
+  transition: 0.3s;
+}

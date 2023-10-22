@@ -6,6 +6,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NewPost from "./pages/NewPost";
+import Populars from "./pages/Populars";
+import Community from "./pages/Community";
 
 function App() {
   const router = createBrowserRouter([
@@ -28,6 +30,14 @@ function App() {
         {
           path: "/new-post",
           element: <NewPost />,
+        },
+        {
+          path: "/populars",
+          element: <Populars />,
+        },
+        {
+          path: "/r/:slug",
+          element: <Community />,
         },
       ],
     },

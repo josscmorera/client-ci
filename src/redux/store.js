@@ -5,6 +5,8 @@ import userReducer from "./slices/user";
 import communityReducer from "./slices/community";
 import postReducer from "./slices/post";
 import tagReducer from "./slices/tag";
+import commentReducer from "./slices/comment";
+import reportReducer from "./slices/report";
 
 export default configureStore({
   reducer: {
@@ -13,5 +15,7 @@ export default configureStore({
     community: communityReducer,
     post: postReducer,
     tag: tagReducer,
+    comment: commentReducer,
+    report: reportReducer,
   },
 });

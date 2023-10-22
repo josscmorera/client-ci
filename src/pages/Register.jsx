@@ -8,13 +8,13 @@ import { useNavigate } from "react-router-dom";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useSelector, useDispatch } from "react-redux";
 
-import { register } from "../redux/thunks/user";
+import { register } from "../redux/thunks/auth";
 import RegisterForm from "../components/auth/RegisterForm";
-import { resetStatus } from "../redux/slices/user";
+import { resetStatus } from "../redux/slices/auth";
 
 export default function Register() {
-  const status = useSelector((state) => state.user.status);
-  const message = useSelector((state) => state.user.message);
+  const status = useSelector((state) => state.auth.status);
+  const message = useSelector((state) => state.auth.message);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
