@@ -130,3 +130,23 @@ export function sortComments(comments) {
 
   return comments;
 }
+
+export function groupAndCountReports(reports) {
+  const groupedReports = reports.reduce((result, report) => {
+    const typeId = report.typeId;
+    if (!result[typeId]) {
+      result[typeId] = { typeId, count: 0, motives: [] };
+    }
+    result[typeId].count++;
+    result[typeId].motives.push(report.content);
+    // Copia todos los campos del reporte al objeto resultante
+    Object.assign(result[typeId], report);
+    return result;
+  }, {});
+
+  const sortedReports = Object.values(groupedReports).sort(
+    (a, b) => b.count - a.count
+  );
+
+  return sortedReports;
+}

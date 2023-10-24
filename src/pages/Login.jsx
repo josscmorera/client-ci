@@ -16,6 +16,7 @@ export default function Login() {
   const message = useSelector((state) => state.auth.error);
   const status = useSelector((state) => state.auth.status);
   const loading = useSelector((state) => state.auth.loading);
+  const user = useSelector((state) => state.auth.user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,7 +24,9 @@ export default function Login() {
   React.useEffect(() => {
     if (status === "fulfilled") {
       dispatch(resetStatus());
-      navigate("/");
+      if (user.role === "admin") {
+        navigate("/admin");
+      } else navigate("/");
     }
   }, [status]);
 

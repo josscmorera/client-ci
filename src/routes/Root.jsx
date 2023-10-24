@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
@@ -8,6 +8,7 @@ import NavBarAdmin from "../components/base/NavBarAdmin";
 
 const Root = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const userAuth = useSelector((state) => state.auth.user);
 
@@ -16,6 +17,13 @@ const Root = () => {
   useEffect(() => {
     dispatch(authCheck());
   }, []);
+
+  React.useEffect(() => {
+    if (!isAdmin && window.location.pathname.includes("admin")) {
+      navigate("/");
+    }
+  }, [userAuth]);
+
   return (
     <>
       {isAdmin ? <NavBarAdmin /> : <NavBar />}

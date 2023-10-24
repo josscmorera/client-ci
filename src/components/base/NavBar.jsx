@@ -16,6 +16,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useDispatch, useSelector } from "react-redux";
 
 import { logout } from "../../redux/thunks/auth";
+import { useNavigate } from "react-router-dom";
 
 const pages = [
   { name: "home", url: "/" },
@@ -30,6 +31,7 @@ function NavBar() {
   const isAuth = useSelector((state) => state.auth.isAuth);
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -38,7 +40,8 @@ function NavBar() {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (url) => {
+    if (url) navigate(url);
     setAnchorElNav(null);
   };
 
@@ -110,10 +113,23 @@ function NavBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                <MenuItem
+                  key={page.name}
+                  onClick={() => handleCloseNavMenu(page.url)}
+                >
                   <Typography textAlign="center">{page.name}</Typography>
                 </MenuItem>
               ))}
+              {settings.map((setting) => {
+                return (
+                  <MenuItem
+                    key={setting.name}
+                    onClick={() => handleCloseNavMenu(setting.url)}
+                  >
+                    <Typography textAlign="center">{setting.name}</Typography>
+                  </MenuItem>
+                );
+              })}
             </Menu>
           </Box>
           <Typography

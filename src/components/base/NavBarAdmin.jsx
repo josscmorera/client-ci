@@ -16,6 +16,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useDispatch, useSelector } from "react-redux";
 
 import { logout } from "../../redux/thunks/auth";
+import { useNavigate } from "react-router-dom";
 
 const pages = [
   { name: "posts", url: "/admin/" },
@@ -30,6 +31,7 @@ function NavBarAdmin() {
   const isAuth = useSelector((state) => state.auth.isAuth);
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -44,6 +46,7 @@ function NavBarAdmin() {
 
   const handleCloseUserMenu = (name) => {
     name === "Logout" && dispatch(logout());
+    name === "Logout" && navigate("/");
     setAnchorElUser(null);
   };
 

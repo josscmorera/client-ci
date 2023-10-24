@@ -8,6 +8,7 @@ import { Box, Tab, Tabs, Typography } from "@mui/material";
 import PostItem from "../components/post/PostItem";
 import UserInfo from "../components/user/UserInfo";
 import UserComments from "../components/comments/UserComments";
+import UserCommunities from "../components/user/UserCommunities";
 
 export default function User() {
   const { username } = useParams();
@@ -46,6 +47,7 @@ export default function User() {
           <Tab label="Comments" {...a11yProps(1)} />
           {/* <Tab label="followers" {...a11yProps(2)} />
           <Tab label="following" {...a11yProps(3)} /> */}
+          <Tab label="Communities" {...a11yProps(2)} />
         </Tabs>
       </Box>
 
@@ -66,6 +68,7 @@ export default function User() {
       )}
 
       {value === 1 && <UserComments user={user} />}
+      {value === 2 && <UserCommunities userId={user._id} />}
     </LayoutPage>
   );
 }

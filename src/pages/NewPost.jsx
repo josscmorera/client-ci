@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { resetStatus } from "../redux/slices/post";
 import PostForm from "../components/post/PostForm";
 import { createPost } from "../redux/thunks/post";
+import Login from "./Login";
 
 export default function NewPost() {
   const user = useSelector((state) => state.auth.user);
@@ -35,6 +36,8 @@ export default function NewPost() {
   const handleSubmit = (data) => {
     dispatch(createPost(data));
   };
+
+  if (!user) return <Login />;
 
   return (
     <Container component="main" maxWidth="sm">

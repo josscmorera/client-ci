@@ -15,6 +15,7 @@ export default function CommunityInfo({
   posts = [],
   createdBy,
   createdAt,
+  itemClick,
 }) {
   const navigate = useNavigate();
 
@@ -25,14 +26,30 @@ export default function CommunityInfo({
     navigate(`/u/${createdBy?.username}`);
   };
 
+  const goToCommunity = (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+    if (!itemClick) return;
+
+    navigate(`/r/${slug}`);
+  };
+
   return (
-    <Card sx={{ borderRadius: 5, maxWidth: 800 }}>
+    <Card
+      sx={{
+        borderRadius: 5,
+        maxWidth: 800,
+        cursor: !itemClick ? "none" : "pointer",
+        mb: 2,
+      }}
+      onClick={goToCommunity}
+    >
       <CardContent>
         <Box display="flex" justifyContent="space-between">
           <Typography variant="h4" component="h2">
             {name}
           </Typography>
-          <JoinLeaveCommunity followers={followers} _id={_id} />
+          {!itemClick && <JoinLeaveCommunity followers={followers} _id={_id} />}
         </Box>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
           r/{slug}

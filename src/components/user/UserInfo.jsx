@@ -7,6 +7,7 @@ import FollowUnfollowUser from "./FollowUnfollowUser";
 import InfoItem from "../base/InfoItem";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function UserInfo({
   _id,
@@ -20,15 +21,32 @@ export default function UserInfo({
   coins,
 }) {
   const user = useSelector((state) => state.auth.user);
+  const isAdmin = user?.role === "admin";
+
+  const navigate = useNavigate();
+
+  const goToUser = (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+    if (!isAdmin) return;
+    navigate(`/u/${username}`);
+  };
 
   return (
-    <Card sx={{ borderRadius: 5, maxWidth: 800 }}>
+    <Card
+      sx={{
+        borderRadius: 5,
+        maxWidth: 800,
+        cursor: isAdmin ? "pointer" : "none",
+      }}
+      onClick={goToUser}
+    >
       <CardContent>
         <Box display="flex" justifyContent="space-between">
           <Typography variant="h4" component="h2">
             {`${firstName} ${lastName}`}
           </Typography>
-          <FollowUnfollowUser following={following} _id={_id} />
+          {!isAdmin && <FollowUnfollowUser following={following} _id={_id} />}
         </Box>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
           u/{username}
@@ -66,7 +84,7 @@ export default function UserInfo({
             number={following.length}
             name="Following"
           />
-          {user?._id === _id && (
+          {(user?._id === _id || isAdmin) && (
             <InfoItem
               icon={<MonetizationOnOutlinedIcon />}
               number={coins}

@@ -7,7 +7,11 @@ import {
   updateReport,
   deleteReport,
 } from "../thunks/report";
-import { addItemArray, replacleItemArray } from "../../helpers/functions";
+import {
+  addItemArray,
+  groupAndCountReports,
+  replacleItemArray,
+} from "../../helpers/functions";
 
 const initialState = {
   reports: [],
@@ -44,7 +48,7 @@ export const reportSlice = createSlice({
     });
     builder.addCase(getReports.fulfilled, (state, action) => {
       return {
-        reports: action.payload.data,
+        reports: groupAndCountReports(action.payload.data),
         loading: false,
         error: "",
       };

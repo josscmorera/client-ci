@@ -7,10 +7,10 @@ export default function ButtonRound({ iconRight, text, onClick, iconLeft }) {
     <Box
       onClick={onClick}
       sx={{ pl: 1, pr: iconRight ? 1 : 2 }}
-      className="button-round"
+      className={`button-round ${!iconRight ? "hide-text" : ""}`}
     >
       {iconLeft}
-      {text}
+      <span>{text}</span>
       {iconRight}
     </Box>
   );

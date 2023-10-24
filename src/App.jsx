@@ -14,6 +14,8 @@ import Post from "./pages/Post";
 import Settings from "./pages/Settings";
 import PostEdit from "./pages/PostEdit";
 import Posts from "./pages/Posts";
+import Users from "./pages/Users";
+import Reports from "./pages/Reports";
 
 function App() {
   const router = createBrowserRouter([
@@ -79,11 +81,11 @@ function App() {
         },
         {
           path: "/admin/users",
-          element: <Home />,
+          element: <Users />,
         },
         {
           path: "/admin/reports",
-          element: <Home />,
+          element: <Reports />,
         },
       ],
     },

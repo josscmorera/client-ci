@@ -36,6 +36,8 @@ export default function PostItem({
   _id,
   upvotes,
   downvotes,
+  report,
+  motives = [],
 }) {
   const daysAgo = moment(createAt).fromNow();
   const navigate = useNavigate();
@@ -193,6 +195,24 @@ export default function PostItem({
           </>
         )}
       </CardActions>
+      {report && (
+        <CardContent>
+          <Typography variant="h6" component="div" mb={2}>
+            Reports ({motives.length})
+          </Typography>
+
+          {motives.map((motive, index) => (
+            <Typography
+              key={index}
+              variant="body2"
+              color="textSecondary"
+              sx={{ opacity: 0.7 }}
+            >
+              {index + 1}. {motive}
+            </Typography>
+          ))}
+        </CardContent>
+      )}
     </Card>
   );
 }

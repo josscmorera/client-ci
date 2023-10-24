@@ -1,8 +1,21 @@
-import { Box, Button, Card, CardActions, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Divider,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import moment from "moment";
 import React from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Link, useNavigate } from "react-router-dom";
+import ButtonRound from "../base/ButtonRound";
+import DeleteComment from "./DeleteComment";
+import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
+import { useSelector } from "react-redux";
 
 export default function CommentItemMin({
   _id,
@@ -11,8 +24,14 @@ export default function CommentItemMin({
   createAt,
   post,
   parent,
+  report,
+  motives = [],
+  replies = [],
 }) {
   const navigate = useNavigate();
+
+  const authUser = useSelector((state) => state.auth.user);
+  const isAdmin = authUser?.role === "admin";
 
   const goToAuthor = (event) => {
     event.stopPropagation();
@@ -23,11 +42,12 @@ export default function CommentItemMin({
   const goToPost = (event) => {
     event.stopPropagation();
     event.preventDefault();
-    navigate(`/r/${post?.slug}`);
+
+    navigate(`/u/${user?.username}/posts/${post?.slug}`);
   };
 
   return (
-    <Link to={`/r/${post?.slug}`} style={{ textDecoration: "none" }}>
+    <Link onClick={goToPost} style={{ textDecoration: "none" }}>
       <Card
         sx={{
           p: 1,
@@ -44,7 +64,7 @@ export default function CommentItemMin({
             onClick={goToPost}
           >
             <Typography variant="body1" sx={{ fontSize: 12 }}>
-              r/{post?.slug}
+              {post?.slug}
             </Typography>
           </Button>
         </CardActions>
@@ -69,12 +89,45 @@ export default function CommentItemMin({
             paddingLeft: 2,
           }}
         >
-          <CardActions sx={{ borderLeft: parent ? "1px solid #ffffff55" : "" }}>
+          <CardContent sx={{ borderLeft: parent ? "1px solid #ffffff55" : "" }}>
             <Box>
               <div dangerouslySetInnerHTML={{ __html: content }} />
             </Box>
-          </CardActions>
+          </CardContent>
         </Box>
+        {isAdmin && (
+          <CardActions>
+            <ButtonRound
+              iconLeft={
+                <IconButton>
+                  <InsertCommentOutlinedIcon fontSize="small" />
+                </IconButton>
+              }
+              text={`${replies.length} Reply`}
+            />
+            <DeleteComment _id={_id} />
+          </CardActions>
+        )}
+        {report && (
+          <>
+            <CardContent>
+              <Typography variant="h6" component="div" mb={2}>
+                Reports ({motives.length})
+              </Typography>
+
+              {motives.map((motive, index) => (
+                <Typography
+                  key={index}
+                  variant="body2"
+                  color="textSecondary"
+                  sx={{ opacity: 0.7 }}
+                >
+                  {index + 1}. {motive}
+                </Typography>
+              ))}
+            </CardContent>
+          </>
+        )}
       </Card>
     </Link>
   );

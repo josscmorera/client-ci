@@ -8,6 +8,25 @@
   cursor: pointer;
 }
 
+@media screen and (max-width: 899px) {
+  .button-round.hide-text {
+    padding-right: 8px;
+  }
+  .button-round.hide-text span {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .button-round.hide-text {
+    padding-right: 4px;
+    padding-left: 4px;
+  }
+  .button-round.hide-text span {
+    display: none;
+  }
+}
+
 .button-round:hover {
   background-color: #333;
 }

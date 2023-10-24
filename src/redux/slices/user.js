@@ -6,11 +6,13 @@ import {
   followUser,
   unfollowUser,
   donateCoins,
+  getUsers,
 } from "../thunks/user";
 import { copy } from "../../helpers/functions";
 
 const initialState = {
   user: null,
+  users: [],
   status: null,
   error: "",
   loading: false,
@@ -50,6 +52,7 @@ export const userSlice = createSlice({
     });
     builder.addCase(getUser.fulfilled, (state, action) => {
       return {
+        users: current(state).users,
         user: action.payload.data,
         error: "",
         loading: false,
@@ -67,6 +70,7 @@ export const userSlice = createSlice({
       const user = copy(current(state).user);
       return {
         user,
+        users: current(state).users,
         status: "fulfilled",
         errorSave: "",
         loadingSave: false,
@@ -85,6 +89,7 @@ export const userSlice = createSlice({
       user.followers.push(action.payload.data._id);
       return {
         user: user,
+        users: current(state).users,
         status: "fulfilled",
         errorSave: "",
         loadingSave: false,
@@ -104,6 +109,7 @@ export const userSlice = createSlice({
       user.followers.splice(index, 1);
       return {
         user: user,
+        users: current(state).users,
         status: "fulfilled",
         errorSave: "",
         loadingSave: false,
@@ -121,9 +127,25 @@ export const userSlice = createSlice({
       const user = current(state).user;
       return {
         user,
+        users: current(state).users,
         status: "fulfilled",
         errorSave: "",
         loadingSave: false,
+      };
+    });
+    builder.addCase(getUsers.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(getUsers.pending, (state, action) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(getUsers.fulfilled, (state, action) => {
+      return {
+        users: action.payload.data,
+        error: "",
+        loading: false,
       };
     });
   },
