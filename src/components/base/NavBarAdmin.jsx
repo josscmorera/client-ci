@@ -18,12 +18,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/thunks/auth";
 
 const pages = [
-  { name: "home", url: "/" },
-  { name: "populars", url: "/populars" },
-  { name: "new post", url: "/new-post" },
+  { name: "posts", url: "/admin/" },
+  { name: "reports", url: "/admin/reports" },
+  { name: "users", url: "/admin/users" },
 ];
 
-function NavBar() {
+function NavBarAdmin() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -53,7 +53,7 @@ function NavBar() {
   ];
   isAuth &&
     (settings = [
-      { name: "Profile", url: `/u/${user?.username}` },
+      { name: "Profile", url: `/admin/u/${user?.username}` },
       { name: "Settings", url: "/settings" },
       { name: "Logout", url: "/" },
     ]);
@@ -218,4 +218,4 @@ function NavBar() {
     </AppBar>
   );
 }
-export default NavBar;
+export default NavBarAdmin;

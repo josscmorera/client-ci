@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
@@ -6,12 +6,28 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Loading from "../base/Loading";
+import { copy } from "../../helpers/functions";
 
-export default function RegisterForm({ onSubmit, message, status }) {
+export default function RegisterForm({
+  onSubmit,
+  message,
+  loading,
+  user = {},
+}) {
   const [pwdMatch, setPwdMatch] = useState({
     error: false,
     message: "",
   });
+
+  const [data, setData] = useState(copy(user));
+
+  useEffect(() => {
+    if (user) {
+      setData(copy(user));
+    } else {
+      setData({});
+    }
+  }, [user]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -41,6 +57,11 @@ export default function RegisterForm({ onSubmit, message, status }) {
     isConfirmPwdMatch && onSubmit(userObj);
   };
 
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setData({ ...data, [name]: value });
+  };
+
   return (
     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
       <Grid container spacing={2}>
@@ -53,6 +74,8 @@ export default function RegisterForm({ onSubmit, message, status }) {
             id="firstName"
             label="First Name"
             autoFocus
+            value={data?.firstName}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -63,6 +86,8 @@ export default function RegisterForm({ onSubmit, message, status }) {
             label="Last Name"
             name="lastName"
             autoComplete="family-name"
+            value={data?.lastName}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12}>
@@ -73,6 +98,8 @@ export default function RegisterForm({ onSubmit, message, status }) {
             label="Email Address"
             name="email"
             autoComplete="email"
+            value={data?.email}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12}>
@@ -83,11 +110,12 @@ export default function RegisterForm({ onSubmit, message, status }) {
             label="Username"
             name="username"
             autoComplete="username"
+            value={data?.username}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
-            required
             fullWidth
             name="password"
             label="Password"
@@ -98,7 +126,6 @@ export default function RegisterForm({ onSubmit, message, status }) {
         </Grid>
         <Grid item xs={12}>
           <TextField
-            required
             fullWidth
             name="confirm-password"
             label="Confirm Password"
@@ -130,15 +157,8 @@ export default function RegisterForm({ onSubmit, message, status }) {
       )}
 
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-        {status === "pending" ? <Loading /> : "Register"}
+        {loading ? <Loading /> : user?.username ? "Save" : "Register"}
       </Button>
-      <Grid container justifyContent="flex-end">
-        <Grid item>
-          <Link href="/login" variant="body2">
-            Already have an account? Please Log in
-          </Link>
-        </Grid>
-      </Grid>
     </Box>
   );
 }

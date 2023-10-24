@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 
 import {
   getUser,
@@ -7,6 +7,7 @@ import {
   unfollowUser,
   donateCoins,
 } from "../thunks/user";
+import { copy } from "../../helpers/functions";
 
 const initialState = {
   user: null,
@@ -50,7 +51,6 @@ export const userSlice = createSlice({
     builder.addCase(getUser.fulfilled, (state, action) => {
       return {
         user: action.payload.data,
-        status: "fulfilled",
         error: "",
         loading: false,
       };
@@ -64,8 +64,9 @@ export const userSlice = createSlice({
       state.errorSave = "";
     });
     builder.addCase(updateUser.fulfilled, (state, action) => {
+      const user = copy(current(state).user);
       return {
-        user: action.payload.data,
+        user,
         status: "fulfilled",
         errorSave: "",
         loadingSave: false,
@@ -80,8 +81,10 @@ export const userSlice = createSlice({
       state.errorSave = "";
     });
     builder.addCase(followUser.fulfilled, (state, action) => {
+      const user = copy(current(state).user);
+      user.followers.push(action.payload.data._id);
       return {
-        user: action.payload.data,
+        user: user,
         status: "fulfilled",
         errorSave: "",
         loadingSave: false,
@@ -96,8 +99,11 @@ export const userSlice = createSlice({
       state.errorSave = "";
     });
     builder.addCase(unfollowUser.fulfilled, (state, action) => {
+      const user = copy(current(state).user);
+      const index = user.followers.indexOf(action.payload.data._id);
+      user.followers.splice(index, 1);
       return {
-        user: action.payload.data,
+        user: user,
         status: "fulfilled",
         errorSave: "",
         loadingSave: false,
@@ -112,7 +118,9 @@ export const userSlice = createSlice({
       state.errorSave = "";
     });
     builder.addCase(donateCoins.fulfilled, (state, action) => {
+      const user = current(state).user;
       return {
+        user,
         status: "fulfilled",
         errorSave: "",
         loadingSave: false,

@@ -2,56 +2,77 @@ import React, { useEffect } from "react";
 import LayoutPage from "../components/base/LayoutPage";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "../redux/thunks/community";
+import { getUser } from "../redux/thunks/user";
 import { getPosts } from "../redux/thunks/post";
-import { Box, Typography } from "@mui/material";
+import { Box, Tab, Tabs, Typography } from "@mui/material";
 import PostItem from "../components/post/PostItem";
-import UserInfo from "../components/community/UserInfo";
+import UserInfo from "../components/user/UserInfo";
+import UserComments from "../components/comments/UserComments";
 
 export default function User() {
-  const { slug } = useParams();
+  const { username } = useParams();
+  const [value, setValue] = React.useState(0);
 
   const posts = useSelector((state) => state.post.posts);
-  const community = useSelector((state) => state.community.community);
-  const loading = useSelector((state) => state.community.loading);
+  const user = useSelector((state) => state.user.user);
+  const loading = useSelector((state) => state.user.loading);
   const loadingPosts = useSelector((state) => state.post.loading);
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!slug) return;
-    dispatch(getUser(slug));
-    if (posts.length === 0) dispatch(getPosts());
-  }, [slug]);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
-  const communityPosts = posts.filter((post) => post.community?.slug === slug);
+  useEffect(() => {
+    if (!username) return;
+    dispatch(getUser(username));
+    if (posts.length === 0) dispatch(getPosts());
+  }, [username]);
+
+  const userPosts = posts.filter((post) => post.author?.username === username);
 
   return (
     <LayoutPage loading={loading || loadingPosts}>
-      {community && <UserInfo {...community} posts={communityPosts} />}
+      {user && <UserInfo {...user} posts={userPosts} />}
 
-      <Typography variant="h6" component="h2" sx={{ mt: 3, mb: 2 }}>
-        Posts
-      </Typography>
+      <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 2, mt: 2 }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+        >
+          <Tab label="Posts" {...a11yProps(0)} />
+          <Tab label="Comments" {...a11yProps(1)} />
+          {/* <Tab label="followers" {...a11yProps(2)} />
+          <Tab label="following" {...a11yProps(3)} /> */}
+        </Tabs>
+      </Box>
 
-      {communityPosts.map((post) => (
-        <Box key={post._id} width="100%" maxWidth={800} margin="0 auto" p={1}>
-          <PostItem
-            _id={post._id}
-            slug={post.slug}
-            title={post.title}
-            author={post.author.username}
-            comments={post.comments.length}
-            content={post.content}
-            imageUrl={post.image}
-            postDate={post.createAt}
-            community={post.community?.slug}
-            tag={post.tag}
-            upvotes={post.upvotes}
-            downvotes={post.downvotes}
-          />
-        </Box>
-      ))}
+      {value === 0 && (
+        <>
+          {userPosts.map((post) => (
+            <Box
+              key={post._id}
+              width="100%"
+              maxWidth={800}
+              margin="0 auto"
+              p={1}
+            >
+              <PostItem {...post} />
+            </Box>
+          ))}
+        </>
+      )}
+
+      {value === 1 && <UserComments user={user} />}
     </LayoutPage>
   );
+}
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
 }

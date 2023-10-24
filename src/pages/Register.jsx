@@ -14,7 +14,7 @@ import { resetStatus } from "../redux/slices/auth";
 
 export default function Register() {
   const status = useSelector((state) => state.auth.status);
-  const message = useSelector((state) => state.auth.message);
+  const message = useSelector((state) => state.auth.error);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

@@ -57,7 +57,7 @@ export const updatePost = createAsyncThunk(
   "post/updatePost",
   async (data, thunkAPI) => {
     try {
-      let response = await Axios.put(`/posts/${data.id}`, data);
+      let response = await Axios.put(`/posts/${data.get("id")}`, data);
 
       return response.data;
     } catch (error) {

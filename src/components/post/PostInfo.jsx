@@ -7,8 +7,9 @@ import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
 import CardMedia from "@mui/material/CardMedia";
 import Chip from "@mui/material/Chip";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
+import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 
 import { URL_IMAGE } from "../../helpers/constants";
 import UpDownVotePost from "./UpDownVotePost";
@@ -20,29 +21,29 @@ import Share from "../base/Share";
 import ModalDoneteUser from "../user/ModalDoneteUser";
 import ModalAddReport from "../report/ModalAddReport";
 import { useSelector } from "react-redux";
-import { Edit } from "@mui/icons-material";
+import { Delete, Edit } from "@mui/icons-material";
 import DeletePost from "./DeletePost";
 
-export default function PostItem({
+export default function PostInfo({
   title,
   author,
   slug,
-  comments,
+  comments = [],
   content,
   image,
   createAt,
   community,
   tag,
   _id,
-  upvotes,
-  downvotes,
+  upvotes = [],
+  downvotes = [],
 }) {
   const daysAgo = moment(createAt).fromNow();
   const navigate = useNavigate();
 
-  const authUser = useSelector((state) => state.auth.user);
-  const isOwner = authUser?._id === author?._id;
-  const isAdmin = authUser?.role === "admin";
+  const userAuth = useSelector((state) => state.auth.user);
+  const isOwner = userAuth?._id === author?._id;
+  const isAdmin = userAuth?.role === "admin";
 
   const goToCommunityOrAuthor = (event) => {
     event.stopPropagation();
@@ -81,64 +82,55 @@ export default function PostItem({
     }
   };
 
+  const jumpToReleventDiv = (id) => {
+    const releventDiv = document.getElementById(id);
+    releventDiv.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <Card className="post">
-      <Link to={getLink()} style={{ textDecoration: "none", color: "white" }}>
-        <Box>
-          <CardContent>
-            <Button
-              variant="text"
-              sx={{ p: 0, textTransform: "lowercase", m: 0, minWidth: 0 }}
-              onClick={goToCommunityOrAuthor}
-            >
-              <Typography variant="body1">
-                {community ? `r/${community?.slug}` : `u/${author?.username}`}
-              </Typography>
-            </Button>
-            <Typography
-              variant="body2"
-              color="textSecondary"
-              sx={{ opacity: 0.7 }}
-            >
-              Posted by{" "}
-              <a className="author-link" onClick={goToAuthor}>
-                u/{author?.username}
-              </a>{" "}
-              - {daysAgo}
-            </Typography>
-            <Typography variant="h6" component="div">
-              {title}{" "}
-              {tag && (
-                <Chip
-                  label={tag.name}
-                  onClick={goToLabel}
-                  color="primary"
-                  size="small"
-                />
-              )}
-            </Typography>
-          </CardContent>
-          {image && (
-            <CardMedia
-              component="img"
-              sx={{ objectFit: "contain", pr: 10, pl: 10, maxHeight: 300 }}
-              image={`${URL_IMAGE}/${image}`}
-              alt="Post Image"
+    <Card sx={{ maxWidth: 1000 }}>
+      <CardContent>
+        <Button
+          variant="text"
+          sx={{ p: 0, textTransform: "lowercase", m: 0, minWidth: 0 }}
+          onClick={goToCommunityOrAuthor}
+        >
+          <Typography variant="body1">
+            {community ? `r/${community?.slug}` : `u/${author?.username}`}
+          </Typography>
+        </Button>
+        <Typography variant="body2" color="textSecondary" sx={{ opacity: 0.7 }}>
+          Posted by{" "}
+          <a className="author-link" onClick={goToAuthor}>
+            u/{author?.username}
+          </a>{" "}
+          - {daysAgo}
+        </Typography>
+        <Typography variant="h6" component="div">
+          {title}{" "}
+          {tag && (
+            <Chip
+              label={tag.name}
+              onClick={goToLabel}
+              color="primary"
+              size="small"
             />
           )}
-          {content && (
-            <CardContent
-              sx={{
-                maxHeight: 200,
-                overflow: "hidden",
-              }}
-              className="content"
-            >
-              <div dangerouslySetInnerHTML={{ __html: content }}></div>
-            </CardContent>
-          )}
-        </Box>
-      </Link>
+        </Typography>
+      </CardContent>
+      {image && (
+        <CardMedia
+          component="img"
+          sx={{ objectFit: "contain", pr: 10, pl: 10, maxHeight: 500 }}
+          image={`${URL_IMAGE}/${image}`}
+          alt="Post Image"
+        />
+      )}
+      {content && (
+        <CardContent className="content">
+          <div dangerouslySetInnerHTML={{ __html: content }}></div>
+        </CardContent>
+      )}
       <CardActions>
         {!isAdmin && (
           <>
@@ -149,13 +141,14 @@ export default function PostItem({
             />
             <ButtonRound
               iconLeft={
-                <IconButton aria-label="Comments">
+                <IconButton>
                   <InsertCommentOutlinedIcon fontSize="small" />
                 </IconButton>
               }
-              onClick={() => navigate(`${getLink()}#comments`)}
-              text={comments.length}
+              text={`${comments.length} Comment`}
+              onClick={() => jumpToReleventDiv("comments")}
             />
+
             <Share link={getLink()} />
           </>
         )}
@@ -164,12 +157,12 @@ export default function PostItem({
           <>
             <ButtonRound
               iconLeft={
-                <IconButton aria-label="Comments">
+                <IconButton>
                   <InsertCommentOutlinedIcon fontSize="small" />
                 </IconButton>
               }
-              onClick={() => navigate(`${getLink()}#comments`)}
-              text={comments.length}
+              text={`${comments.length} Comment`}
+              onClick={() => jumpToReleventDiv("comments")}
             />
             <DeletePost _id={_id} />
           </>

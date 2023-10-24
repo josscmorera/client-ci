@@ -1,0 +1,21 @@
+.dropzone .MuiDropzoneArea-root {
+  border: solid 1px #555;
+}
+
+.dropzone .MuiDropzoneArea-root:hover {
+  border: solid 1px #fff;
+}
+
+.dropzone p {
+  font-size: 1.2rem;
+  color: #ccc;
+}
+
+.dropzone .MuiDropzoneArea-textContainer {
+  padding: 30px;
+  color: #ccc;
+}
+
+.dropzone .MuiDropzonePreviewList-root {
+  justify-content: center;
+}

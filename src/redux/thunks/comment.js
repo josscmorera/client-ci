@@ -4,9 +4,9 @@ import Axios from "../../lib/Axios";
 
 export const getComments = createAsyncThunk(
   "comment/getComments",
-  async (_, thunkAPI) => {
+  async (data, thunkAPI) => {
     try {
-      let response = await Axios.get("/comments");
+      let response = await Axios.get("/comments", { params: data });
 
       return response.data;
     } catch (error) {
@@ -57,7 +57,7 @@ export const updateComment = createAsyncThunk(
   "comment/updateComment",
   async (data, thunkAPI) => {
     try {
-      let response = await Axios.put(`/comments/${data.id}`, data);
+      let response = await Axios.put(`/comments/${data._id}`, data);
 
       return response.data;
     } catch (error) {
@@ -91,7 +91,7 @@ export const upvoteComment = createAsyncThunk(
   "comment/upvoteComment",
   async (id, thunkAPI) => {
     try {
-      let response = await Axios.post(`/comments/${id}/upvote`);
+      let response = await Axios.put(`/comments/${id}/upvote`);
 
       return response.data;
     } catch (error) {
@@ -108,7 +108,7 @@ export const downvoteComment = createAsyncThunk(
   "comment/downvoteComment",
   async (id, thunkAPI) => {
     try {
-      let response = await Axios.post(`/comments/${id}/downvote`);
+      let response = await Axios.put(`/comments/${id}/downvote`);
 
       return response.data;
     } catch (error) {

@@ -1,16 +1,19 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
-import React from "react";
+import { Box, Button, CardMedia, TextField, Typography } from "@mui/material";
+import React, { useEffect } from "react";
 import SelectCommunity from "../community/SelectCommunity";
-import { TextEditor } from "../base/TextEditor";
+import TextEditor from "../base/TextEditor";
 import Dropzone from "../base/Dropzone";
 import SelectTag from "../tag/SelectTag";
 import Loading from "../base/Loading";
+import { URL_IMAGE } from "../../helpers/constants";
 
-export default function PostForm({ onSubmit, loading, message }) {
+export default function PostForm({ onSubmit, loading, message, post }) {
   const [community, setCommunity] = React.useState(null);
   const [tag, setTag] = React.useState(null);
   const [content, setContent] = React.useState("");
   const [file, setFile] = React.useState(null);
+  const [title, setTitle] = React.useState("");
+  const [urlImage, setUrlImage] = React.useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -30,9 +33,28 @@ export default function PostForm({ onSubmit, loading, message }) {
       data.set("file", file);
     }
 
-    console.log(file);
+    if (title) {
+      data.set("title", title);
+    }
+
     onSubmit(data);
   };
+
+  useEffect(() => {
+    if (post) {
+      setCommunity(post.community?._id);
+      setTag(post.tag?._id);
+      setContent(post.content);
+      setTitle(post.title);
+      setUrlImage(`${URL_IMAGE}/${post.image}`);
+    } else {
+      setCommunity(null);
+      setTag(null);
+      setContent("");
+      setFile(null);
+      setTitle("");
+    }
+  }, [post]);
 
   return (
     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
@@ -45,10 +67,20 @@ export default function PostForm({ onSubmit, loading, message }) {
         name="title"
         autoComplete="title"
         autoFocus
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
       />
       <SelectCommunity value={community} onChange={setCommunity} />
       <SelectTag value={tag} onChange={setTag} />
       <Dropzone file={file} onChange={setFile} />
+      {urlImage && (
+        <CardMedia
+          component="img"
+          sx={{ objectFit: "contain", pr: 10, pl: 10, maxHeight: 100 }}
+          image={urlImage}
+          alt="Post Image"
+        />
+      )}
       <TextEditor
         id="content"
         value={content}

@@ -30,13 +30,9 @@ export default function SelectCommunity({ value, onChange }) {
   };
 
   const valueToOption = (value) => {
-    if (!value) return;
+    if (!value) return null;
 
-    const community = communities.find((community) => community._id === value);
-    if (community) {
-      return { value: community._id, label: community.name };
-    }
-    return null;
+    return options.find((option) => option.value === value);
   };
 
   useEffect(() => {
@@ -44,6 +40,8 @@ export default function SelectCommunity({ value, onChange }) {
       dispatch(getCommunities());
     }
   }, []);
+
+  const inputValue = valueToOption(value)?.label || "";
 
   return (
     <>

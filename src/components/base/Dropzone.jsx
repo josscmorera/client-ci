@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import React from "react";
 import { DropzoneArea } from "react-mui-dropzone";
+import "../../styles/Dropzone.css";
 
 export default function Dropzone({ file, onChange }) {
   const handleChange = (files) => {
@@ -8,7 +9,7 @@ export default function Dropzone({ file, onChange }) {
   };
 
   return (
-    <Box sx={{ mt: 2, mb: 1 }}>
+    <Box sx={{ mt: 2, mb: 1 }} className="dropzone">
       <DropzoneArea
         onChange={handleChange}
         acceptedFiles={["image/*"]}

@@ -4,15 +4,13 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCommunity } from "../redux/thunks/community";
 import { getPosts } from "../redux/thunks/post";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import PostItem from "../components/post/PostItem";
-import CommunityInfo from "../components/community/CommunityInfo";
 
-export default function Community() {
-  const { slug } = useParams();
+export default function CommunityLabel() {
+  const { slug, label } = useParams();
 
   const posts = useSelector((state) => state.post.posts);
-  const community = useSelector((state) => state.community.community);
   const loading = useSelector((state) => state.community.loading);
   const loadingPosts = useSelector((state) => state.post.loading);
 
@@ -24,16 +22,13 @@ export default function Community() {
     if (posts.length === 0) dispatch(getPosts());
   }, [slug]);
 
-  const communityPosts = posts.filter((post) => post.community?.slug === slug);
+  const communityPosts = posts.filter(
+    (post) => post.community?.slug === slug && post.tag?.slug === label
+  );
+  const tag = posts.find((post) => post.tag?.slug === label)?.tag;
 
   return (
-    <LayoutPage loading={loading || loadingPosts}>
-      {community && <CommunityInfo {...community} posts={communityPosts} />}
-
-      <Typography variant="h6" component="h2" sx={{ mt: 3, mb: 2 }}>
-        Posts
-      </Typography>
-
+    <LayoutPage loading={loading || loadingPosts} title={tag?.name || label}>
       {communityPosts.map((post) => (
         <Box key={post._id} width="100%" maxWidth={800} margin="0 auto" p={1}>
           <PostItem {...post} />

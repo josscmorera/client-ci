@@ -3,6 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import Axios from "../../lib/Axios";
 import { checkAuthToken } from "../../lib/checkAuthToken";
 import { resetUser, setMessage, setUser } from "../slices/user";
+import { authSuccess } from "../slices/auth";
 
 export const authCheck = createAsyncThunk(
   "auth/authCheck",
@@ -15,8 +16,6 @@ export const authCheck = createAsyncThunk(
       }
 
       let response = await Axios.get("/users/authtoken");
-
-      thunkAPI.dispatch(setUser(response.data));
 
       localStorage.setItem("clientToken", response.data.token);
 

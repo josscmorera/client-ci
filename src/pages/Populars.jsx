@@ -29,20 +29,7 @@ export default function Populars() {
     <LayoutPage title={"Populars Posts"}>
       {sortedPosts.map((post) => (
         <Box key={post._id} width="100%" maxWidth={800} margin="0 auto" p={1}>
-          <PostItem
-            _id={post._id}
-            slug={post.slug}
-            title={post.title}
-            author={post.author.username}
-            comments={post.comments.length}
-            content={post.content}
-            imageUrl={post.image}
-            postDate={post.createAt}
-            community={post.community?.slug}
-            tag={post.tag}
-            upvotes={post.upvotes}
-            downvotes={post.downvotes}
-          />
+          <PostItem {...post} />
         </Box>
       ))}
     </LayoutPage>

@@ -28,13 +28,9 @@ export default function SelectTag({ value, onChange }) {
   };
 
   const valueToOption = (value) => {
-    if (!value) return;
+    if (!value) return null;
 
-    const tag = tags.find((tag) => tag._id === value);
-    if (tag) {
-      return { value: tag._id, label: tag.name };
-    }
-    return null;
+    return options.find((option) => option.value === value);
   };
 
   useEffect(() => {
@@ -42,6 +38,8 @@ export default function SelectTag({ value, onChange }) {
       dispatch(getTags());
     }
   }, []);
+
+  const inputValue = valueToOption(value)?.label || "";
 
   return (
     <>
@@ -53,6 +51,7 @@ export default function SelectTag({ value, onChange }) {
           options={options}
           sx={{ width: 500 }}
           onChange={(event, option) => onSelect(option)}
+          //isOptionEqualToValue={(option, value) => option.value === value}
           renderInput={(params) => <TextField {...params} label="Tag" />}
         />
         {loading && <Loading />}

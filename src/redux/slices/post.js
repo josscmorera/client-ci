@@ -9,7 +9,11 @@ import {
   upvotePost,
   downvotePost,
 } from "../thunks/post";
-import { addItemArray, replacleItemArray } from "../../helpers/functions";
+import {
+  addItemArray,
+  removeItemArray,
+  replacleItemArray,
+} from "../../helpers/functions";
 
 const initialState = {
   posts: [],
@@ -47,7 +51,6 @@ export const postSlice = createSlice({
     builder.addCase(getPosts.fulfilled, (state, action) => {
       return {
         posts: action.payload.data,
-        status: "fulfilled",
         loading: false,
         error: "",
       };
@@ -64,7 +67,6 @@ export const postSlice = createSlice({
       return {
         ...state,
         post: action.payload.data,
-        status: "fulfilled",
         loading: false,
         error: "",
       };
@@ -117,6 +119,7 @@ export const postSlice = createSlice({
       return {
         ...state,
         post: action.payload.data,
+        posts: removeItemArray(state.posts, action.payload.data),
         status: "fulfilled",
         loadingSave: false,
         errorSave: "",

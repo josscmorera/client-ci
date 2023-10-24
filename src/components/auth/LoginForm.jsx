@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Loading from "../base/Loading";
 
-export default function LoginForm({ onSubmit, message, status }) {
+export default function LoginForm({ onSubmit, message, loading }) {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleSubmit = (event) => {
@@ -66,7 +66,7 @@ export default function LoginForm({ onSubmit, message, status }) {
         </Typography>
       )}
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-        {status === "pending" ? <Loading /> : "Log In"}
+        {loading ? <Loading /> : "Log In"}
       </Button>
       <Grid container>
         <Grid item xs>

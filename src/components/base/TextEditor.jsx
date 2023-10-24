@@ -1,13 +1,11 @@
-import { useState, forwardRef, useEffect } from "react";
+import { useState, forwardRef, useEffect, memo } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import "../../styles/TextEditor.css";
 import { Box } from "@mui/material";
 
 const TINYMCE_API_KEY = import.meta.env.VITE_TINYMCE_API_KEY;
 
-export const TextEditor = forwardRef((props, ref) => {
-  const [editorLoaded, setEditorLoaded] = useState(false);
-
+export const TextEditorComponent = forwardRef((props, ref) => {
   const handleFilePicker = (callback) => {
     const input = document.createElement("input");
     input.setAttribute("type", "file");
@@ -50,7 +48,7 @@ export const TextEditor = forwardRef((props, ref) => {
         ref={ref}
         apiKey={TINYMCE_API_KEY}
         init={{
-          height: 300,
+          height: 200,
           menubar: false,
           plugins: [
             "a11ychecker",
@@ -82,8 +80,7 @@ export const TextEditor = forwardRef((props, ref) => {
             "undo redo | casechange blocks | bold italic backcolor | " +
             "alignleft aligncenter alignright alignjustify | " +
             "bullist numlist checklist outdent indent | removeformat | a11ycheck code table help |" +
-            "link image |" +
-            "preview",
+            "link image",
           image_title: true,
           automatic_uploads: true,
           file_picker_types: "image",
@@ -92,10 +89,12 @@ export const TextEditor = forwardRef((props, ref) => {
           content_css: "dark",
           skin: "oxide-dark",
           content_style:
-            "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+            "body { font-family:Helvetica,Arial,sans-serif; font-size:14px: background-color: #333; }",
         }}
         {...props}
       />
     </Box>
   );
 });
+
+export default memo(TextEditorComponent);

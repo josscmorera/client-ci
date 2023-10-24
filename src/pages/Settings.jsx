@@ -1,59 +1,55 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useNavigate } from "react-router-dom";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useSelector, useDispatch } from "react-redux";
 
-import LoginForm from "../components/auth/LoginForm";
-import { login } from "../redux/thunks/auth";
-import { resetStatus } from "../redux/slices/auth";
+import { updateUser } from "../redux/thunks/user";
+import { resetStatus } from "../redux/slices/user";
+import RegisterForm from "../components/auth/RegisterForm";
 
-export default function Login() {
-  const message = useSelector((state) => state.auth.error);
-  const status = useSelector((state) => state.auth.status);
-  const loading = useSelector((state) => state.auth.loading);
+export default function Settings() {
+  const status = useSelector((state) => state.user.status);
+  const message = useSelector((state) => state.user.errorSave);
+  const loading = useSelector((state) => state.user.loadingSave);
+
+  const user = useSelector((state) => state.auth.user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  const handleSubmit = (userObj) => {
+    dispatch(updateUser({ _id: user._id, ...userObj }));
+  };
+
+  useEffect(() => {
     if (status === "fulfilled") {
       dispatch(resetStatus());
-      navigate("/");
+      navigate("/u/" + user.username);
     }
   }, [status]);
-
-  const handleSubmit = (userObj) => {
-    dispatch(login(userObj));
-  };
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 20,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
-        </Avatar>
         <Typography component="h1" variant="h5">
-          Log In
+          Edit Profile
         </Typography>
-
-        <LoginForm
+        <RegisterForm
           onSubmit={handleSubmit}
-          status={status}
-          message={message}
           loading={loading}
+          message={message}
+          user={user}
         />
       </Box>
     </Container>

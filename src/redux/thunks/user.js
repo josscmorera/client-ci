@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import Axios from "../../lib/Axios";
+import { setUser } from "../slices/auth";
 
 export const getUser = createAsyncThunk(
   "user/getUser",
@@ -22,7 +23,8 @@ export const updateUser = createAsyncThunk(
   "user/updateUser",
   async (data, thunkAPI) => {
     try {
-      let response = await Axios.put(`/users/${data.id}`, data);
+      let response = await Axios.put(`/users/${data._id}`, data);
+      thunkAPI.dispatch(setUser(response.data));
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -36,9 +38,12 @@ export const updateUser = createAsyncThunk(
 
 export const followUser = createAsyncThunk(
   "user/followUser",
-  async (data, thunkAPI) => {
+  async (id, thunkAPI) => {
     try {
-      let response = await Axios.post(`/users/${data.id}/follow`, data);
+      let response = await Axios.put(`/users/${id}/follow`);
+
+      thunkAPI.dispatch(setUser(response.data));
+
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -52,9 +57,12 @@ export const followUser = createAsyncThunk(
 
 export const unfollowUser = createAsyncThunk(
   "user/unfollowUser",
-  async (data, thunkAPI) => {
+  async (id, thunkAPI) => {
     try {
-      let response = await Axios.post(`/users/${data.id}/unfollow`, data);
+      let response = await Axios.put(`/users/${id}/unfollow`);
+
+      thunkAPI.dispatch(setUser(response.data));
+
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -70,7 +78,10 @@ export const donateCoins = createAsyncThunk(
   "user/donateCoins",
   async (data, thunkAPI) => {
     try {
-      let response = await Axios.post(`/users/${data.id}/donate`, data);
+      let response = await Axios.put(`/users/${data.user}/donate`, data);
+
+      thunkAPI.dispatch(setUser(response.data));
+
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(

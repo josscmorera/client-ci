@@ -8,6 +8,12 @@ import Register from "./pages/Register";
 import NewPost from "./pages/NewPost";
 import Populars from "./pages/Populars";
 import Community from "./pages/Community";
+import User from "./pages/User";
+import CommunityLabel from "./pages/CommunityLabel";
+import Post from "./pages/Post";
+import Settings from "./pages/Settings";
+import PostEdit from "./pages/PostEdit";
+import Posts from "./pages/Posts";
 
 function App() {
   const router = createBrowserRouter([
@@ -38,6 +44,46 @@ function App() {
         {
           path: "/r/:slug",
           element: <Community />,
+        },
+        {
+          path: "u/:username",
+          element: <User />,
+        },
+        {
+          path: "/r/:slug/posts/:slug",
+          element: <Post />,
+        },
+        {
+          path: "u/:username/posts/:slug",
+          element: <Post />,
+        },
+        {
+          path: "r/:slug/label/:label",
+          element: <CommunityLabel />,
+        },
+        {
+          path: "u/:username/label/:label",
+          element: <CommunityLabel />,
+        },
+        {
+          path: "/settings",
+          element: <Settings />,
+        },
+        {
+          path: "/posts/:slug/edit",
+          element: <PostEdit />,
+        },
+        {
+          path: "/admin",
+          element: <Posts />,
+        },
+        {
+          path: "/admin/users",
+          element: <Home />,
+        },
+        {
+          path: "/admin/reports",
+          element: <Home />,
         },
       ],
     },

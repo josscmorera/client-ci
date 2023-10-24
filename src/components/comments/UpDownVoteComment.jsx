@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography } from "@mui/material";
+import { IconButton } from "@mui/material";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbDownOutlineIcon from "@mui/icons-material/ThumbDownOutlined";
@@ -6,11 +6,11 @@ import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { downvotePost, upvotePost } from "../../redux/thunks/post";
+import { downvoteComment, upvoteComment } from "../../redux/thunks/comment";
 import ButtonRound from "../base/ButtonRound";
 
-export default function UpDownVotePost({
-  postId,
+export default function UpDownVoteComment({
+  commentId,
   upvotes = [],
   downvotes = [],
 }) {
@@ -37,7 +37,7 @@ export default function UpDownVotePost({
     event.preventDefault();
     event.stopPropagation();
     if (!user) return alert("Please login to vote");
-    dispatch(upvotePost(postId));
+    dispatch(upvoteComment(commentId));
     setIsUpvoted(!isUpvoted);
     isDownvoted && setIsDownvoted(false);
   };
@@ -46,7 +46,7 @@ export default function UpDownVotePost({
     event.preventDefault();
     event.stopPropagation();
     if (!user) return alert("Please login to vote");
-    dispatch(downvotePost(postId));
+    dispatch(downvoteComment(commentId));
     setIsDownvoted(!isDownvoted);
     isUpvoted && setIsUpvoted(false);
   };

@@ -9,7 +9,14 @@ import {
   upvoteComment,
   downvoteComment,
 } from "../thunks/comment";
-import { addItemArray, replacleItemArray } from "../../helpers/functions";
+import {
+  replaceItemContent,
+  replaceUpvotesComment,
+  replacleItemArray,
+  searchAndAddReplyItem,
+  serchAndRemoveReplyItem,
+  sortComments,
+} from "../../helpers/functions";
 
 const initialState = {
   comments: [],
@@ -43,10 +50,11 @@ export const commentSlice = createSlice({
     builder.addCase(getComments.pending, (state) => {
       state.loading = true;
       state.error = "";
+      state.comments = [];
     });
     builder.addCase(getComments.fulfilled, (state, action) => {
       return {
-        comments: action.payload.data,
+        comments: sortComments(action.payload.data),
         loading: false,
         error: "",
       };
@@ -79,7 +87,7 @@ export const commentSlice = createSlice({
       return {
         ...state,
         comment: action.payload.data,
-        comments: addItemArray(state.comments, action.payload.data),
+        comments: searchAndAddReplyItem(state.comments, action.payload.data),
         status: "fulfilled",
         loadingSave: false,
         errorSave: "",
@@ -97,7 +105,7 @@ export const commentSlice = createSlice({
       return {
         ...state,
         comment: action.payload.data,
-        comments: replacleItemArray(state.comments, action.payload.data),
+        comments: replaceItemContent(state.comments, action.payload.data),
         status: "fulfilled",
         loadingSave: false,
         errorSave: "",
@@ -114,7 +122,7 @@ export const commentSlice = createSlice({
     builder.addCase(deleteComment.fulfilled, (state, action) => {
       return {
         ...state,
-        comment: action.payload.data,
+        comments: serchAndRemoveReplyItem(state.comments, action.payload.data),
         status: "fulfilled",
         loadingSave: false,
         errorSave: "",
@@ -132,7 +140,7 @@ export const commentSlice = createSlice({
       return {
         ...state,
         comment: action.payload.data,
-        comments: replacleItemArray(state.comments, action.payload.data),
+        comments: replaceUpvotesComment(state.comments, action.payload.data),
         status: "fulfilled",
         loadingSave: false,
         errorSave: "",
@@ -150,7 +158,7 @@ export const commentSlice = createSlice({
       return {
         ...state,
         comment: action.payload.data,
-        comments: replacleItemArray(state.comments, action.payload.data),
+        comments: replaceUpvotesComment(state.comments, action.payload.data),
         status: "fulfilled",
         loadingSave: false,
         errorSave: "",
